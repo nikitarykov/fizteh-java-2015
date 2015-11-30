@@ -133,9 +133,9 @@ public class TwitterStreamer {
                         break;
                     }
                 }
-                /*if (!result.hasNext()) {
+                if (!result.hasNext()) {
                     break;
-                }*/
+                }
                 query = result.nextQuery();
             }
         } catch (TwitterException exception) {
