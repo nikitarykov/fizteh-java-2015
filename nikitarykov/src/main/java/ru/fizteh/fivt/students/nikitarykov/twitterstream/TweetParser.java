@@ -1,4 +1,4 @@
-package ru.fizteh.fivt.students.nikitarykov.moduletests.library;
+package ru.fizteh.fivt.students.nikitarykov.twitterstream;
 
 import twitter4j.Status;
 

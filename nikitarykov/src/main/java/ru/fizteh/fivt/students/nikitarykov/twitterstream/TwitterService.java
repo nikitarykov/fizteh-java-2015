@@ -1,4 +1,4 @@
-package ru.fizteh.fivt.students.nikitarykov.moduletests.library;
+package ru.fizteh.fivt.students.nikitarykov.twitterstream;
 
 import twitter4j.*;
 
@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static ru.fizteh.fivt.students.nikitarykov.moduletests.library.Constants.SLEEP_TIME;
-import static ru.fizteh.fivt.students.nikitarykov.moduletests.library.Constants.URL_FOR_GOOGLE_MAPS;
-import static ru.fizteh.fivt.students.nikitarykov.moduletests.library.Constants.URL_FOR_IP_NAVIGATION;
+import static ru.fizteh.fivt.students.nikitarykov.twitterstream.Constants.SLEEP_TIME;
+import static ru.fizteh.fivt.students.nikitarykov.twitterstream.Constants.URL_FOR_GOOGLE_MAPS;
+import static ru.fizteh.fivt.students.nikitarykov.twitterstream.Constants.URL_FOR_IP_NAVIGATION;
 
 public class TwitterService {
     private final Twitter twitter;

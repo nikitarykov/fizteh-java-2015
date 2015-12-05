@@ -1,4 +1,4 @@
-package ru.fizteh.fivt.students.nikitarykov.moduletests.library;
+package ru.fizteh.fivt.students.nikitarykov.twitterstream;
 
 /**
  * Created by Nikita Rykov on 29.11.2015.

@@ -1,4 +1,4 @@
-package ru.fizteh.fivt.students.nikitarykov.moduletests.library;
+package ru.fizteh.fivt.students.nikitarykov.twitterstream;
 
 import java.time.temporal.ChronoUnit;
 import java.util.Date;

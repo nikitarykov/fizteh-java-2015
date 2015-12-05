@@ -1,10 +1,10 @@
-package ru.fizteh.fivt.students.nikitarykov.moduletests.library;
+package ru.fizteh.fivt.students.nikitarykov.twitterstream;
 
 import com.beust.jcommander.JCommander;
 import twitter4j.*;
 import java.io.IOException;
 
-import static ru.fizteh.fivt.students.nikitarykov.moduletests.library.Constants.MAX_COUNT_OF_TRIES;
+import static ru.fizteh.fivt.students.nikitarykov.twitterstream.Constants.MAX_COUNT_OF_TRIES;
 
 /**
  * Created by Nikita Rykov on 28.11.2015.
