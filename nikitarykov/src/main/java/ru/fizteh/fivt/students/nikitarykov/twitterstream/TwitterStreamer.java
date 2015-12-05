@@ -12,17 +12,6 @@ import java.util.List;
  */
 public class TwitterStreamer {
 
-    private static String wordForRetweet(int count) {
-        if (count % 100 > 10 && count % 100 < 20) {
-            return "ретвитов";
-        }
-        switch (count % 10) {
-            case 1 : return "ретвит";
-            case 2: case 3: case 4 : return "ретвита";
-            default: return "ретвитов";
-        }
-    }
-
     public static void printHelp(JCommander jCommander) {
         jCommander.setProgramName("TwitterParser");
         jCommander.usage();
@@ -41,7 +30,9 @@ public class TwitterStreamer {
         }
         System.out.print(text);
         if (!status.isRetweet() && status.getRetweetCount() > 0) {
-            System.out.print(" (" + status.getRetweetCount() + " " + wordForRetweet(status.getRetweetCount()) + ")");
+            WordMatcher matcher = new WordMatcher();
+            System.out.print(" (" + status.getRetweetCount() + " "
+                + matcher.wordForRetweet(status.getRetweetCount()) + ")");
         }
         System.out.println();
     }
