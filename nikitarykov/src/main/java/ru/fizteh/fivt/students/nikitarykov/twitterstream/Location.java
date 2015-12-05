@@ -1,6 +1,6 @@
-package ru.fizteh.fivt.students.nikitarykov.twitterstream;
+package ru.fizteh.fivt.students.nikitarykov.moduletests.library;
 
-import static ru.fizteh.fivt.students.nikitarykov.twitterstream.Constants.RADIUS_OF_THE_EARTH;
+import static ru.fizteh.fivt.students.nikitarykov.moduletests.library.Constants.RADIUS_OF_THE_EARTH;
 /**
  * Created by Nikita Rykov on 29.11.2015.
  */

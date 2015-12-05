@@ -1,10 +1,10 @@
-package ru.fizteh.fivt.students.nikitarykov.twitterstream;
+package ru.fizteh.fivt.students.nikitarykov.moduletests.library;
 
 import com.beust.jcommander.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.fizteh.fivt.students.nikitarykov.twitterstream.Constants.DEFAULT_LIMIT;
+import static ru.fizteh.fivt.students.nikitarykov.moduletests.library.Constants.DEFAULT_LIMIT;
 /**
  * Created by Nikita Rykov on 29.11.2015.
  */
