@@ -4,6 +4,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.time.*;
 
+import static ru.fizteh.fivt.students.nikitarykov.moduletests.library.Constants.MINUTES;
+import static ru.fizteh.fivt.students.nikitarykov.moduletests.library.Constants.HOURS;
+import static ru.fizteh.fivt.students.nikitarykov.moduletests.library.Constants.DAYS;
+
 /**
  * Created by Nikita Rykov on 30.11.2015.
  */
@@ -17,15 +21,15 @@ public class DataParser {
             return "только что ";
         } else if (tweetTime.isAfter(currentTime.minusHours(1))) {
             int minutes = (int) ChronoUnit.MINUTES.between(tweetTime, currentTime);
-            return minutes + " " + matcher.wordForMinutes(minutes) + " назад ";
+            return minutes + " " + matcher.match(minutes, MINUTES) + " назад ";
         } else if (currentTime.toLocalDate().isEqual(tweetTime.toLocalDate())) {
             int hours = (int) ChronoUnit.HOURS.between(tweetTime, currentTime);
-            return hours + " " + matcher.wordForHours(hours) + " назад ";
+            return hours + " " + matcher.match(hours, HOURS) + " назад ";
         } else if (tweetTime.toLocalDate().isEqual(currentTime.minusDays(1).toLocalDate())) {
             return "вчера ";
         } else {
             int days = (int) ChronoUnit.DAYS.between(tweetTime, currentTime);
-            return days + " " + matcher.wordForDays(days) + " назад ";
+            return days + " " + matcher.match(days, DAYS) + " назад ";
         }
     }
 }

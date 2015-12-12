@@ -4,6 +4,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static ru.fizteh.fivt.students.nikitarykov.moduletests.library.Constants.RETWEET;
+import static ru.fizteh.fivt.students.nikitarykov.moduletests.library.Constants.MINUTES;
+import static ru.fizteh.fivt.students.nikitarykov.moduletests.library.Constants.HOURS;
+import static ru.fizteh.fivt.students.nikitarykov.moduletests.library.Constants.DAYS;
 
 /**
  * Created by Nikita Rykov on 04.12.2015.
@@ -17,99 +21,30 @@ public class WordMatcherTest {
     }
 
     @Test
-    public void testWordForRetweet() throws Exception {
+    public void testMatch() throws Exception {
         assertNotNull(matcher);
-        assertEquals("ретвит", matcher.wordForRetweet(1));
-        assertEquals("ретвита", matcher.wordForRetweet(22));
-        assertEquals("ретвита", matcher.wordForRetweet(133));
-        assertEquals("ретвита", matcher.wordForRetweet(4));
-        assertEquals("ретвитов", matcher.wordForRetweet(55));
-        assertEquals("ретвитов", matcher.wordForRetweet(666));
-        assertEquals("ретвитов", matcher.wordForRetweet(77));
-        assertEquals("ретвитов", matcher.wordForRetweet(8));
-        assertEquals("ретвитов", matcher.wordForRetweet(99));
-        assertEquals("ретвитов", matcher.wordForRetweet(100));
-        assertEquals("ретвитов", matcher.wordForRetweet(11));
-        assertEquals("ретвитов", matcher.wordForRetweet(112));
-        assertEquals("ретвитов", matcher.wordForRetweet(13));
-        assertEquals("ретвитов", matcher.wordForRetweet(214));
-        assertEquals("ретвитов", matcher.wordForRetweet(15));
-        assertEquals("ретвитов", matcher.wordForRetweet(1316));
-        assertEquals("ретвитов", matcher.wordForRetweet(17));
-        assertEquals("ретвитов", matcher.wordForRetweet(518));
-        assertEquals("ретвитов", matcher.wordForRetweet(19));
-
-    }
-
-    @Test
-    public void testWordForMinutes() throws Exception {
-        assertNotNull(matcher);
-        assertEquals("минута", matcher.wordForMinutes(1));
-        assertEquals("минуты", matcher.wordForMinutes(22));
-        assertEquals("минуты", matcher.wordForMinutes(33));
-        assertEquals("минуты", matcher.wordForMinutes(4));
-        assertEquals("минут", matcher.wordForMinutes(55));
-        assertEquals("минут", matcher.wordForMinutes(26));
-        assertEquals("минут", matcher.wordForMinutes(37));
-        assertEquals("минут", matcher.wordForMinutes(8));
-        assertEquals("минут", matcher.wordForMinutes(49));
-        assertEquals("минут", matcher.wordForMinutes(50));
-        assertEquals("минут", matcher.wordForMinutes(11));
-        assertEquals("минут", matcher.wordForMinutes(12));
-        assertEquals("минут", matcher.wordForMinutes(13));
-        assertEquals("минут", matcher.wordForMinutes(14));
-        assertEquals("минут", matcher.wordForMinutes(15));
-        assertEquals("минут", matcher.wordForMinutes(16));
-        assertEquals("минут", matcher.wordForMinutes(17));
-        assertEquals("минут", matcher.wordForMinutes(18));
-        assertEquals("минут", matcher.wordForMinutes(19));
-    }
-
-    @Test
-    public void testWordForHours() throws Exception {
-        assertNotNull(matcher);
-        assertEquals("час", matcher.wordForHours(21));
-        assertEquals("часа", matcher.wordForHours(22));
-        assertEquals("часа", matcher.wordForHours(23));
-        assertEquals("часа", matcher.wordForHours(4));
-        assertEquals("часов", matcher.wordForHours(5));
-        assertEquals("часов", matcher.wordForHours(6));
-        assertEquals("часов", matcher.wordForHours(7));
-        assertEquals("часов", matcher.wordForHours(8));
-        assertEquals("часов", matcher.wordForHours(9));
-        assertEquals("часов", matcher.wordForHours(10));
-        assertEquals("часов", matcher.wordForHours(11));
-        assertEquals("часов", matcher.wordForHours(12));
-        assertEquals("часов", matcher.wordForHours(13));
-        assertEquals("часов", matcher.wordForHours(14));
-        assertEquals("часов", matcher.wordForHours(15));
-        assertEquals("часов", matcher.wordForHours(16));
-        assertEquals("часов", matcher.wordForHours(17));
-        assertEquals("часов", matcher.wordForHours(18));
-        assertEquals("часов", matcher.wordForHours(19));
-    }
-
-    @Test
-    public void testWordForDays() throws Exception {
-        assertNotNull(matcher);
-        assertEquals("день", matcher.wordForDays(21));
-        assertEquals("дня", matcher.wordForDays(2));
-        assertEquals("дня", matcher.wordForDays(123));
-        assertEquals("дня", matcher.wordForDays(104));
-        assertEquals("дней", matcher.wordForDays(55));
-        assertEquals("дней", matcher.wordForDays(6));
-        assertEquals("дней", matcher.wordForDays(117));
-        assertEquals("дней", matcher.wordForDays(68));
-        assertEquals("дней", matcher.wordForDays(9));
-        assertEquals("дней", matcher.wordForDays(100));
-        assertEquals("дней", matcher.wordForDays(11));
-        assertEquals("дней", matcher.wordForDays(12));
-        assertEquals("дней", matcher.wordForDays(313));
-        assertEquals("дней", matcher.wordForDays(414));
-        assertEquals("дней", matcher.wordForDays(15));
-        assertEquals("дней", matcher.wordForDays(816));
-        assertEquals("дней", matcher.wordForDays(17));
-        assertEquals("дней", matcher.wordForDays(618));
-        assertEquals("дней", matcher.wordForDays(19));
+        assertEquals("ретвит", matcher.match(1, RETWEET));
+        assertEquals("минута", matcher.match(51, MINUTES));
+        assertEquals("час", matcher.match(21, HOURS));
+        assertEquals("день", matcher.match(101, DAYS));
+        assertEquals("ретвита", matcher.match(22, RETWEET));
+        assertEquals("минуты", matcher.match(43, MINUTES));
+        assertEquals("часа", matcher.match(4, HOURS));
+        assertEquals("дня", matcher.match(552, DAYS));
+        assertEquals("ретвитов", matcher.match(55, RETWEET));
+        assertEquals("минут", matcher.match(6, MINUTES));
+        assertEquals("часов", matcher.match(7, HOURS));
+        assertEquals("дней", matcher.match(38, DAYS));
+        assertEquals("ретвитов", matcher.match(109, RETWEET));
+        assertEquals("минут", matcher.match(40, MINUTES));
+        assertEquals("ретвитов", matcher.match(11, RETWEET));
+        assertEquals("минут", matcher.match(12, MINUTES));
+        assertEquals("часов", matcher.match(13, HOURS));
+        assertEquals("дней", matcher.match(114, DAYS));
+        assertEquals("ретвитов", matcher.match(115, RETWEET));
+        assertEquals("минут", matcher.match(16, MINUTES));
+        assertEquals("часов", matcher.match(17, HOURS));
+        assertEquals("дней", matcher.match(1318, DAYS));
+        assertEquals("ретвитов", matcher.match(519, RETWEET));
     }
 }

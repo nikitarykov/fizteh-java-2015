@@ -2,6 +2,8 @@ package ru.fizteh.fivt.students.nikitarykov.moduletests.library;
 
 import twitter4j.Status;
 
+import static ru.fizteh.fivt.students.nikitarykov.moduletests.library.Constants.RETWEET;
+
 /**
  * Created by Nikita Rykov on 04.12.2015.
  */
@@ -21,7 +23,7 @@ public class TweetParser {
         if (!status.isRetweet() && status.getRetweetCount() > 0) {
             WordMatcher matcher = new WordMatcher();
             result += " (" + status.getRetweetCount() + " "
-                    + matcher.wordForRetweet(status.getRetweetCount()) + ")";
+                    + matcher.match(status.getRetweetCount(), RETWEET) + ")";
         }
         return result;
     }

@@ -4,6 +4,10 @@ package ru.fizteh.fivt.students.nikitarykov.moduletests.library;
  * Created by Nikita Rykov on 29.11.2015.
  */
 public final class Constants {
+    public static final int RETWEET = 0;
+    public static final int MINUTES = 1;
+    public static final int HOURS = 2;
+    public static final int DAYS = 3;
     public static final int DEFAULT_LIMIT = 1000;
     public static final int SLEEP_TIME = 1000;
     public static final int MAX_COUNT_OF_TRIES = 3;
