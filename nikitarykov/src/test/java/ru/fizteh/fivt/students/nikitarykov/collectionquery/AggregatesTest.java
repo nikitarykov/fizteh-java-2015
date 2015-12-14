@@ -31,9 +31,9 @@ public class AggregatesTest {
     @Test
     public void testMax() throws Exception {
         assertEquals(((AggregateFunction)Aggregates.max(CollectionQuery.Student::getName))
-                    .apply(list), "surkov");
+                .apply(list), "surkov");
         assertEquals(((AggregateFunction)Aggregates.max(CollectionQuery.Student::getDateOfBirth))
-                    .apply(list), LocalDate.parse("1996-02-14"));
+                .apply(list), LocalDate.parse("1996-02-14"));
         assertEquals(((AggregateFunction)Aggregates.max(CollectionQuery.Student::getGroup))
                 .apply(list), "399");
         assertEquals((Double)((AggregateFunction)Aggregates.max(CollectionQuery.Student::age))

@@ -77,7 +77,7 @@ public class SelectStmtTest {
         List<CollectionQuery.Statistics> result = new ArrayList<>();
         groupSelect.groupBy(CollectionQuery.Student::getGroup)
                 .orderBy(asc(CollectionQuery.Statistics::getGroup),
-                    desc(CollectionQuery.Statistics::getCount)).execute()
+                        desc(CollectionQuery.Statistics::getCount)).execute()
                 .forEach(result::add);
         assertEquals(result.size(), 3);
         assertEquals(result.get(0),
@@ -122,7 +122,7 @@ public class SelectStmtTest {
                 .from(unionList)
                 .select(CollectionQuery.Statistics.class, s -> "all",
                         count(s -> 1), avg(CollectionQuery.Student::age))
-            .execute().forEach(result::add);
+                .execute().forEach(result::add);
         assertEquals(result.size(), 2);
         assertEquals(result.get(0), new CollectionQuery.Statistics("396", 2L, 20.0));
         assertEquals(result.get(1), new CollectionQuery.Statistics("all", 1L, 30.0));
