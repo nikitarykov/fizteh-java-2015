@@ -94,6 +94,7 @@ public class DatabaseService<T> {
             for (int i = 0; i < fields.size(); ++i) {
                 fields.get(i).set(result, resultSet.getObject(i + 1));
             }
+            statement.close();
             return result;
          } catch (IllegalAccessException | InstantiationException exception) {
             throw new IllegalArgumentException("Error in object creation");
@@ -109,6 +110,7 @@ public class DatabaseService<T> {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
+
             while (resultSet.next()) {
                 T element = clazz.newInstance();
                 for (int i = 0; i < fields.size(); ++i) {
@@ -116,6 +118,7 @@ public class DatabaseService<T> {
                 }
                 result.add(element);
             }
+            statement.close();
         } catch (InstantiationException | IllegalAccessException e) {
             throw new IllegalArgumentException("wrong class");
         } finally {
@@ -128,19 +131,19 @@ public class DatabaseService<T> {
     void insert(T record) throws SQLException, IllegalAccessException {
         String query = "INSERT INTO " + tableName + " (";
         for (int i = 0; i < fields.size(); ++i) {
-            query = query + getName(fields.get(i));
+            query += getName(fields.get(i));
             if (i < fields.size() - 1) {
-                query = query + ", ";
+                query += ", ";
             } else {
-                query = query + ") ";
+                query += ") ";
             }
         }
-        query = query + "VALUES (";
+        query += "VALUES (";
         for (int i = 0; i < fields.size(); ++i) {
             if (i < fields.size() - 1) {
-                query = query + "?, ";
+                query += "?, ";
             } else {
-                query = query + "?)";
+                query += "?)";
             }
 
         }
@@ -151,6 +154,7 @@ public class DatabaseService<T> {
                 statement.setObject(i + 1, fields.get(i).get(record));
             }
             statement.execute();
+            statement.close();
         } finally {
             connection.close();
         }
@@ -162,9 +166,9 @@ public class DatabaseService<T> {
         }
         String query = "UPDATE " + tableName + " SET ";
         for (int i = 0; i < fields.size(); ++i) {
-            query = query + getName(fields.get(i)) + " = ?";
+            query += getName(fields.get(i)) + " = ?";
             if (i < fields.size() - 1) {
-                query = query + ", ";
+                query += ", ";
             }
         }
         query += " WHERE " + getName(fields.get(primaryKeyIndex)) + " = ?";
@@ -177,6 +181,7 @@ public class DatabaseService<T> {
             statement.setObject(fields.size() + 1,
                     fields.get(primaryKeyIndex).get(record));
             statement.execute();
+            statement.close();
         } finally {
             connection.close();
         }
@@ -193,6 +198,7 @@ public class DatabaseService<T> {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setObject(1, fields.get(primaryKeyIndex).get(record));
             statement.execute();
+            statement.close();
         } finally {
             connection.close();
         }
@@ -202,21 +208,22 @@ public class DatabaseService<T> {
         String query = "CREATE TABLE IF NOT EXISTS "
                 + tableName + "(";
         for (int i = 0; i < fields.size(); ++i) {
-            query = query + getName(fields.get(i))
+            query += getName(fields.get(i))
                     + " " + match(fields.get(i).getType());
             if (i == primaryKeyIndex) {
-                query = query + " PRIMARY KEY";
+                query += " PRIMARY KEY";
             }
             if (i < fields.size() - 1) {
-                query = query + ", ";
+                query += ", ";
             } else {
-                query = query + ")";
+                query += ")";
             }
         }
         Connection connection = pool.getConnection();
         try {
             Statement statement = connection.createStatement();
             statement.execute(query);
+            statement.close();
         } finally {
             connection.close();
         }
@@ -228,6 +235,7 @@ public class DatabaseService<T> {
         try {
             Statement statement = connection.createStatement();
             statement.execute(query);
+            statement.close();
         } finally {
             connection.close();
         }
