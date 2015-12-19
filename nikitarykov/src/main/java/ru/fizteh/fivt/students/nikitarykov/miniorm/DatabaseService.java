@@ -1,6 +1,6 @@
 package ru.fizteh.fivt.students.nikitarykov.miniorm;
 
-import org.h2.jdbcx.JdbcDataSource;
+import org.h2.jdbcx.JdbcConnectionPool;
 import ru.fizteh.fivt.students.nikitarykov.miniorm.annotations.Column;
 import ru.fizteh.fivt.students.nikitarykov.miniorm.annotations.PrimaryKey;
 import ru.fizteh.fivt.students.nikitarykov.miniorm.annotations.Table;
@@ -19,19 +19,16 @@ import static ru.fizteh.fivt.students.nikitarykov.miniorm.TypeMatcher.match;
  */
 public class DatabaseService<T> {
     private Class<T> clazz;
-    private Connection connection;
     private String tableName;
     private List<Field> fields;
     private int primaryKeyIndex = -1;
+    private JdbcConnectionPool pool;
 
     DatabaseService(Class<T> clazz) throws SQLException, ClassNotFoundException {
         this.clazz = clazz;
         Class.forName("org.h2.Driver");
-        JdbcDataSource dataSource = new JdbcDataSource();
-        dataSource.setURL("jdbc:h2:./test");
-        dataSource.setUser("test");
-        dataSource.setPassword("test");
-        connection = dataSource.getConnection();
+        pool = JdbcConnectionPool.create(
+                "jdbc:h2:./test", "test", "test");
         if (!clazz.isAnnotationPresent(Table.class)) {
             throw new IllegalArgumentException("Class has no @Table annotation");
         }
@@ -87,12 +84,12 @@ public class DatabaseService<T> {
     public <K> T queryById(K key) throws SQLException {
         String query = "SELECT * FROM " + tableName + " WHERE "
                 + getName(fields.get(primaryKeyIndex)) + " = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, key.toString());
-        ResultSet resultSet = statement.executeQuery();
-        resultSet.next();
+        Connection connection = pool.getConnection();
         try {
-
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, key.toString());
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
             T result = clazz.newInstance();
             for (int i = 0; i < fields.size(); ++i) {
                 fields.get(i).set(result, resultSet.getObject(i + 1));
@@ -100,15 +97,18 @@ public class DatabaseService<T> {
             return result;
          } catch (IllegalAccessException | InstantiationException exception) {
             throw new IllegalArgumentException("Error in object creation");
+        } finally {
+            connection.close();
         }
     }
 
     public List<T> queryForAll() throws SQLException {
         List<T> result = new ArrayList<>();
         String query = "SELECT * FROM " + tableName;
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(query);
+        Connection connection = pool.getConnection();
         try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 T element = clazz.newInstance();
                 for (int i = 0; i < fields.size(); ++i) {
@@ -118,6 +118,8 @@ public class DatabaseService<T> {
             }
         } catch (InstantiationException | IllegalAccessException e) {
             throw new IllegalArgumentException("wrong class");
+        } finally {
+            connection.close();
         }
         return result;
     }
@@ -142,12 +144,18 @@ public class DatabaseService<T> {
             }
 
         }
-        PreparedStatement statement = connection.prepareStatement(query);
-        for (int i = 0; i < fields.size(); ++i) {
-            statement.setObject(i + 1, fields.get(i).get(record));
+        Connection connection = pool.getConnection();
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            for (int i = 0; i < fields.size(); ++i) {
+                statement.setObject(i + 1, fields.get(i).get(record));
+            }
+            statement.execute();
+        } finally {
+            connection.close();
         }
-        statement.execute();
     }
+
     void update(T record) throws SQLException, IllegalAccessException {
         if (primaryKeyIndex == -1) {
             throw new IllegalArgumentException("No primary key found");
@@ -160,13 +168,18 @@ public class DatabaseService<T> {
             }
         }
         query += " WHERE " + getName(fields.get(primaryKeyIndex)) + " = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        for (int i = 0; i < fields.size(); ++i) {
-            statement.setObject(i + 1, fields.get(i).get(record));
+        Connection connection = pool.getConnection();
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            for (int i = 0; i < fields.size(); ++i) {
+                statement.setObject(i + 1, fields.get(i).get(record));
+            }
+            statement.setObject(fields.size() + 1,
+                    fields.get(primaryKeyIndex).get(record));
+            statement.execute();
+        } finally {
+            connection.close();
         }
-        statement.setObject(fields.size() + 1,
-                fields.get(primaryKeyIndex).get(record));
-        statement.execute();
     }
 
     void delete(T record) throws SQLException, IllegalAccessException {
@@ -175,9 +188,14 @@ public class DatabaseService<T> {
         }
         String query = "DELETE " + tableName + " WHERE "
                 + getName(fields.get(primaryKeyIndex)) + " = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setObject(1, fields.get(primaryKeyIndex).get(record));
-        statement.execute();
+        Connection connection = pool.getConnection();
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setObject(1, fields.get(primaryKeyIndex).get(record));
+            statement.execute();
+        } finally {
+            connection.close();
+        }
     }
 
     void createTable() throws SQLException {
@@ -195,13 +213,23 @@ public class DatabaseService<T> {
                 query = query + ")";
             }
         }
-        Statement statement = connection.createStatement();
-        statement.execute(query);
+        Connection connection = pool.getConnection();
+        try {
+            Statement statement = connection.createStatement();
+            statement.execute(query);
+        } finally {
+            connection.close();
+        }
     }
 
     void dropTable() throws SQLException {
         String query = "DROP TABLE IF EXISTS " + tableName;
-        Statement statement = connection.createStatement();
-        statement.execute(query);
+        Connection connection = pool.getConnection();
+        try {
+            Statement statement = connection.createStatement();
+            statement.execute(query);
+        } finally {
+            connection.close();
+        }
     }
 }
